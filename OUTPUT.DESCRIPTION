@@ -1,0 +1,1 @@
+“A console-based system where users can view the library inventory (stored as a linked list), search or filter books by title/author, borrow or return books, and undo the most recent borrow/return action using a stack.”
