@@ -1,1 +1,1 @@
-.
+“A system that lists patients in order of priority—critical cases handled via a priority queue and regular cases via a normal queue—while displaying each patient’s estimated wait time.”
