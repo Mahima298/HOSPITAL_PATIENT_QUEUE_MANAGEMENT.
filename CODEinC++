@@ -1,0 +1,87 @@
+#include <iostream>
+#include <queue>
+#include <string>
+
+// Structure to represent a patient
+struct Patient {
+    std::string name;
+    int priority; // Used only for critical patients
+    bool is_critical;
+
+    // A custom comparator for the priority queue
+    // Higher priority value means higher urgency
+    bool operator<(const Patient& other) const {
+        return priority < other.priority;
+    }
+};
+
+// Function to display the patient queues and wait times
+void displayStatus(const std::priority_queue<Patient>& critical_queue, const std::queue<Patient>& regular_queue) {
+    const int AVG_SERVICE_TIME_CRITICAL = 10; // in minutes
+    const int AVG_SERVICE_TIME_REGULAR = 5;  // in minutes
+
+    int critical_patients = critical_queue.size();
+    int regular_patients = regular_queue.size();
+
+    int critical_wait_time = critical_patients * AVG_SERVICE_TIME_CRITICAL;
+    int regular_wait_time = critical_wait_time + (regular_patients * AVG_SERVICE_TIME_REGULAR);
+
+    std::cout << "\n--- Hospital Queue Status ---" << std::endl;
+    std::cout << "Critical Patients in Queue: " << critical_patients << std::endl;
+    std::cout << "Regular Patients in Queue: " << regular_patients << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "Estimated Wait Time for a NEW Critical Patient: " << critical_wait_time << " minutes." << std::endl;
+    std::cout << "Estimated Wait Time for a NEW Regular Patient: " << regular_wait_time << " minutes." << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+}
+
+int main() {
+    // Priority queue for critical patients
+    // std::priority_queue by default uses std::less, so we provide a custom operator< in our struct
+    std::priority_queue<Patient> critical_queue;
+    
+    // Normal queue for regular patients
+    std::queue<Patient> regular_queue;
+
+    // --- Main Loop to Simulate Patient Arrivals ---
+    // Enqueue some patients to demonstrate functionality
+    
+    // Regular patients arrive first
+    regular_queue.push({"John Doe", 0, false});
+    regular_queue.push({"Jane Smith", 0, false});
+
+    // A critical patient arrives
+    critical_queue.push({"Emergency A", 3, true}); 
+    
+    // Another critical patient with higher priority
+    critical_queue.push({"Emergency B", 5, true});
+    
+    // Another regular patient
+    regular_queue.push({"Peter Jones", 0, false});
+    
+    // Display the initial status
+    displayStatus(critical_queue, regular_queue);
+
+    // --- Processing Patients ---
+    std::cout << "\n--- Processing Patients ---" << std::endl;
+    
+    // Critical patients are always processed first
+    while (!critical_queue.empty()) {
+        Patient p = critical_queue.top();
+        critical_queue.pop();
+        std::cout << "Processing critical patient: " << p.name << " (Priority: " << p.priority << ")..." << std::endl;
+        // After processing a critical patient, display the updated status
+        displayStatus(critical_queue, regular_queue);
+    }
+    
+    // Then, process regular patients
+    while (!regular_queue.empty()) {
+        Patient p = regular_queue.front();
+        regular_queue.pop();
+        std::cout << "Processing regular patient: " << p.name << "..." << std::endl;
+        // After processing a regular patient, display the updated status
+        displayStatus(critical_queue, regular_queue);
+    }
+
+    return 0;
+}
