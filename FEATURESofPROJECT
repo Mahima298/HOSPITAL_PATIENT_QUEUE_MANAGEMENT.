@@ -1,0 +1,7 @@
+Priority Triage System: Implements a priority queue for critical patients, ensuring they are always processed before non-critical cases from the regular queue.
+
+Dynamic Wait Time Estimation: Calculates and displays an estimated wait time for patients, considering the number of people in both queues and an average service time.
+
+Efficient Patient Check-in: Allows for seamless registration of incoming patients, classifying them as either 'emergency' or 'regular' to direct them to the appropriate queue.
+
+Orderly Patient Calling: Systematically calls the next patient for consultation, always clearing the emergency queue first before moving to the regular patient queue.
